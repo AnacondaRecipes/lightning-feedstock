@@ -14,7 +14,8 @@ build:
     - lightning = lightning.app.cli.lightning_cli:main
   script: {{ PYTHON }} -m pip install . -vv
   number: 0
-  skip: true  # [py<38]
+  # Skip on linux-s390x because lightning-cloud isn't available.
+  skip: true  # [py<38 or s390x]
 
 requirements:
   host:
