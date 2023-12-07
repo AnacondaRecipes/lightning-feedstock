@@ -12,17 +12,18 @@ source:
 build:
   entry_points:
     - lightning = lightning.app.cli.lightning_cli:main
-  noarch: python
   script: {{ PYTHON }} -m pip install . -vv
   number: 0
+  skip: true  # [py<38]
 
 requirements:
   host:
     - pip
-    - python >=3.8
+    - python
     - setuptools
     - wheel
   run:
+    - python
     - arrow <3.0,>=1.2.0
     - backoff <4.0,>=2.2.1
     - beautifulsoup4 <6.0,>=4.8.0
@@ -40,7 +41,6 @@ requirements:
     - packaging
     - psutil <7.0
     - pydantic <2.2.0,>=1.7.4
-    - python >=3.8
     - python-multipart <2.0,>=0.0.5
     - pytorch <4.0,>=1.11.0
     - pytorch-lightning
@@ -66,7 +66,7 @@ test:
     - LIGHTING_TESTING=1 lightning --help
   requires:
     - pip
-    - python >=3.7, <3.11 # TODO: this upper bound is because of PyTorch issue with dataclass
+    - python >=3.7,<3.11 # TODO: this upper bound is because of PyTorch issue with dataclass
 
 about:
   home: https://github.com/Lightning-AI/lightning
