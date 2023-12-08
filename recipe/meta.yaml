@@ -64,7 +64,9 @@ test:
     - lightning
   commands:
     - pip check
-    - LIGHTING_TESTING=1 lightning --help
+    - export LIGHTING_TESTING=1  # [unix]
+    - set LIGHTING_TESTING=1  # [win]
+    - lightning --help
   requires:
     - pip
     - python >=3.7,<3.11 # TODO: this upper bound is because of PyTorch issue with dataclass
