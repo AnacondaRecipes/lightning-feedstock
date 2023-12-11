@@ -12,17 +12,19 @@ source:
 build:
   entry_points:
     - lightning = lightning.app.cli.lightning_cli:main
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   number: 0
+  # Skip on linux-s390x because lightning-cloud isn't available.
+  skip: true  # [py<38 or s390x]
 
 requirements:
   host:
     - pip
-    - python >=3.8
+    - python
     - setuptools
     - wheel
   run:
+    - python
     - arrow <3.0,>=1.2.0
     - backoff <4.0,>=2.2.1
     - beautifulsoup4 <6.0,>=4.8.0
@@ -40,7 +42,6 @@ requirements:
     - packaging
     - psutil <7.0
     - pydantic <2.2.0,>=1.7.4
-    - python >=3.8
     - python-multipart <2.0,>=0.0.5
     - pytorch <4.0,>=1.11.0
     - pytorch-lightning
@@ -63,19 +64,25 @@ test:
     - lightning
   commands:
     - pip check
-    - LIGHTING_TESTING=1 lightning --help
+    - export LIGHTING_TESTING=1  # [unix]
+    - set LIGHTING_TESTING=1  # [win]
+    - lightning --help
   requires:
     - pip
-    - python >=3.7, <3.11 # TODO: this upper bound is because of PyTorch issue with dataclass
+    - python >=3.7,<3.11 # TODO: this upper bound is because of PyTorch issue with dataclass
 
 about:
-  home: https://github.com/Lightning-AI/lightning
+  home: https://github.com/Lightning-AI/pytorch-lightning
   summary: Use Lightning Apps to build everything from production-ready, multi-cloud ML systems to simple research demos.
+  description: Use Lightning Apps to build everything from production-ready, multi-cloud ML systems to simple research demos.
   license: Apache-2.0
+  license_family: Apache
   license_file:
     - LICENSE
     - src/lightning/app/cli/component-template/LICENSE
     - src/lightning/app/cli/app-template/LICENSE
+  dev_url: https://github.com/Lightning-AI/pytorch-lightning
+  doc_url: https://lightning.ai/docs/app/stable/
 
 extra:
   recipe-maintainers:
