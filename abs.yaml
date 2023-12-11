@@ -1,9 +1,2 @@
-channels:
-  - https://staging.continuum.io/prefect/fs/dateutils-feedstock/pr2/c1f185c
-  - https://staging.continuum.io/prefect/fs/deepdiff-feedstock/pr2/7e21774
-  - https://staging.continuum.io/prefect/fs/inquirer-feedstock/pr2/570b0de
-  - https://staging.continuum.io/prefect/fs/starsessions-feedstock/pr2/31622bc
-  - https://staging.continuum.io/prefect/fs/lightning-cloud-feedstock/pr1/0b24257
-
 upload_channels:
   - sfe1ed40
