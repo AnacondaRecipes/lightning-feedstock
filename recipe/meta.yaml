@@ -25,6 +25,9 @@ requirements:
     - wheel
   run:
     - python
+    # The pinnings below are extracted from lightning.egg-info/requires.txt
+    # This is because the requirements under requirements/ are transformed
+    # before being used by the setup script
     - pyyaml >=5.4,<8.0
     ## fsspec[http] ##
     - fsspec >=2022.5.0,<2026.0
@@ -39,6 +42,7 @@ requirements:
     - tqdm >=4.57.0,<6.0
     - typing-extensions >=4.4.0,<6.0
     - pytorch-lightning
+    # click is necessary to build the entry-points
     - click
 
 test:
