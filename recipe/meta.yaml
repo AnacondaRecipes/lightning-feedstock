@@ -1,21 +1,21 @@
 {% set name = "lightning" %}
-{% set version = "2.0.9.post0" %}
+{% set version = "2.3.3" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/lightning-{{ version }}.tar.gz
-  sha256: 93687b65bff28cedfc13c758bdfed982849c34f9bb506937c63275a9647586a0
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 7f454711895c1c6e455766f01fa39522e25e5ab54c15c5e5fbad342fa92bc93c
 
 build:
   entry_points:
-    - lightning = lightning.app.cli.lightning_cli:main
+    - fabric = lightning.fabric.cli:_main
+    - lightning = lightning.fabric.cli:_legacy_main
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
-  number: 1
-  # Skip on linux-s390x because lightning-cloud isn't available.
-  skip: true  # [py<38 or s390x]
+  number: 0
+  skip: true  # [py<38]
 
 requirements:
   host:
@@ -25,51 +25,35 @@ requirements:
     - wheel
   run:
     - python
-    - arrow <3.0,>=1.2.0
-    - backoff <4.0,>=2.2.1
-    - beautifulsoup4 <6.0,>=4.8.0
-    - click <10.0
-    - croniter <1.5.0,>=1.3.0
-    - dateutils <2.0
-    - deepdiff <8.0,>=5.7.0
-    - fastapi <2.0,>=0.92.0
-    - fsspec <2025.0,>=2022.5.0
-    - inquirer <5.0,>=2.10.0
-    - jinja2 <5.0
-    - lightning-cloud >=0.5.38
-    - lightning-utilities <2.0,>=0.7.0
-    - numpy <3.0,>=1.17.2
-    - packaging
-    - psutil <7.0
-    - pydantic <2.2.0,>=1.7.4
-    - python-multipart <2.0,>=0.0.5
-    - pytorch <4.0,>=1.11.0
+    # The pinnings below are extracted from lightning.egg-info/requires.txt
+    # This is because the requirements under requirements/ are transformed
+    # before being used by the setup script
+    - pyyaml >=5.4,<8.0
+    ## fsspec[http] ##
+    - fsspec >=2022.5.0,<2026.0
+    - aiohttp !=4.0.0a0,!=4.0.0a1
+    - requests
+    ## fsspec[http] ##
+    - lightning-utilities >=0.10.0,<2.0
+    - numpy >=1.17.2,<3.0
+    - packaging >=20.0,<25.0
+    - pytorch >=2.0.0,<4.0
+    - torchmetrics >=0.7.0,<3.0
+    - tqdm >=4.57.0,<6.0
+    - typing-extensions >=4.4.0,<6.0
     - pytorch-lightning
-    - pyyaml <8.0
-    - requests <4.0
-    - rich <15.0,>=12.3.0
-    - starlette
-    - starsessions <2.0,>=1.2.1
-    - torchmetrics <3.0,>=0.7.0
-    - tqdm <6.0,>=4.57.0
-    - traitlets <7.0,>=5.3.0
-    - typing-extensions <6.0,>=4.0.0
-    - urllib3 <4.0
-    - uvicorn <2.0
-    - websocket-client <3.0
-    - websockets <13.0
+    # click is necessary to use the entry-points
+    - click
 
 test:
   imports:
     - lightning
   commands:
     - pip check
-    - export LIGHTING_TESTING=1  # [unix]
-    - set LIGHTING_TESTING=1  # [win]
     - lightning --help
+    - fabric --help
   requires:
     - pip
-    - python >=3.7,<3.11 # TODO: this upper bound is because of PyTorch issue with dataclass
 
 about:
   home: https://github.com/Lightning-AI/pytorch-lightning
@@ -79,8 +63,6 @@ about:
   license_family: Apache
   license_file:
     - LICENSE
-    - src/lightning/app/cli/component-template/LICENSE
-    - src/lightning/app/cli/app-template/LICENSE
   dev_url: https://github.com/Lightning-AI/pytorch-lightning
   doc_url: https://lightning.ai/docs/app/stable/
 
