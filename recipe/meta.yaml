@@ -42,8 +42,6 @@ requirements:
     - tqdm >=4.57.0,<6.0
     - typing-extensions >=4.4.0,<6.0
     - pytorch-lightning
-    # click is necessary to build the entry-points
-    - click
 
 test:
   imports:
@@ -54,6 +52,8 @@ test:
     - fabric --help
   requires:
     - pip
+    # click is necessary to use the entry-points
+    - click
 
 about:
   home: https://github.com/Lightning-AI/pytorch-lightning
