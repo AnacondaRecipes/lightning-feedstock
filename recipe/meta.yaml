@@ -1,5 +1,5 @@
 {% set name = "lightning" %}
-{% set version = "2.3.3" %}
+{% set version = "2.5.0.post0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 7f454711895c1c6e455766f01fa39522e25e5ab54c15c5e5fbad342fa92bc93c
+  sha256: f720fe4f6d03a7f15f9aef3112c5a0d1eafd8d27b903f4a1354b609685b2ec70
 
 build:
   entry_points:
@@ -15,7 +15,7 @@ build:
     - lightning = lightning.fabric.cli:_legacy_main
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   number: 0
-  skip: true  # [py<38]
+  skip: true  # [py<39]
 
 requirements:
   host:
@@ -37,7 +37,7 @@ requirements:
     - lightning-utilities >=0.10.0,<2.0
     - numpy >=1.17.2,<3.0
     - packaging >=20.0,<25.0
-    - pytorch >=2.0.0,<4.0
+    - pytorch >=2.1.0,<4.0
     - torchmetrics >=0.7.0,<3.0
     - tqdm >=4.57.0,<6.0
     - typing-extensions >=4.4.0,<6.0
