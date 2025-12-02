@@ -1,13 +1,13 @@
 {% set name = "lightning" %}
-{% set version = "2.5.0.post0" %}
+{% set version = "2.6.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: f720fe4f6d03a7f15f9aef3112c5a0d1eafd8d27b903f4a1354b609685b2ec70
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 881841716b59c1837ae0c562c2e64fea9bcf49ef9de3867bd1f868557ec23d04
 
 build:
   entry_points:
@@ -23,27 +23,36 @@ requirements:
     - python
     - setuptools
     - wheel
+    - packaging
   run:
     - python
     # The pinnings below are extracted from lightning.egg-info/requires.txt
     # This is because the requirements under requirements/ are transformed
     # before being used by the setup script
-    - pyyaml >=5.4,<8.0
+    - pyyaml <8.0,>5.4
     ## fsspec[http] ##
-    - fsspec >=2022.5.0,<2026.0
+    - fsspec <2027.0,>=2022.5.0
     - aiohttp !=4.0.0a0,!=4.0.0a1
     - requests
     ## fsspec[http] ##
-    - lightning-utilities >=0.10.0,<2.0
+    - lightning-utilities <2.0,>=0.10.0
     - numpy >=1.17.2,<3.0
-    - packaging >=20.0,<25.0
-    - pytorch >=2.1.0,<4.0
-    - torchmetrics >=0.7.0,<3.0
-    - tqdm >=4.57.0,<6.0
+    - packaging <27.0,>=20.0
+    - pytorch <4.0,>=2.1.0
+    - torchmetrics <3.0,>0.7.0
+    - tqdm <6.0,>=4.57.0
     - typing-extensions >=4.4.0,<6.0
     - pytorch-lightning
     # click is necessary to use the entry-points
     - click
+    - typing_extensions <6.0,>4.5.0
+  run_constrained:
+    - hydra-core <2.0,>=1.2.0
+    - jsonargparse <5.0,>=4.39.0
+    - matplotlib-base <4.0,>3.1
+    - omegaconf <3.0,>=2.2.3
+    - rich <15.0,>=12.3.0
+    - tensorboardX <3.0,>=2.2
 
 test:
   imports:
