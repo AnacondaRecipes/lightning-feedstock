@@ -36,7 +36,6 @@ requirements:
     - aiohttp !=4.0.0a0,!=4.0.0a1
     #- requests
     - lightning-utilities >=0.10.0,<2.0
-    #- numpy >=1.17.2,<3.0
     - packaging >=20.0,<27.0
     # By default pytorch try to resolve gpu version:
     # Trying to find MPS symbol : _C.cpython-310-darwin.so, 0x0002: Symbol not found: __ZN2at3mps14getMPSProfilerEv
