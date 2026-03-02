@@ -1,5 +1,5 @@
 {% set name = "lightning" %}
-{% set version = "2.6.0" %}
+{% set version = "2.6.1" %}
 
 package:
   name: {{ name }}
@@ -7,17 +7,17 @@ package:
 
 source:
   - url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-    sha256: 881841716b59c1837ae0c562c2e64fea9bcf49ef9de3867bd1f868557ec23d04
+    sha256: 859104b98c61add6fe60d0c623abf749baf25f2950a66ebdfb4bd18aa7decba9
   - url: https://github.com/Lightning-AI/pytorch-{{ name }}/archive/refs/tags/{{ version }}.tar.gz
-    sha256: 2761a16d362ac604798e230883a81b54ed301ef45eea4b93a58ced79feb50760
+    sha256: cbe72c69ec1c807b3728ad22034c6b7548bcdc344acbd7009710d616f9271c47
     folder: gh_src
 
 build:
   number: 0
+  skip: true  # [py<39]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
   entry_points:
     - fabric = lightning.fabric.cli:_main
-  skip: true  # [py<39]
 
 requirements:
   host:
@@ -53,6 +53,9 @@ requirements:
 # >   os.symlink(source, dest)
 # E   OSError: [WinError 1314] A required privilege is not held by the client: '.\\lightning_logs' -> '.\\sym_lightning_logs'
 {% set deselect_tests = deselect_tests + " --deselect=gh_src/tests/tests_fabric/loggers/test_tensorboard.py::test_tensorboard_with_symlink" %}  # [win]
+# RuntimeError: makeDeviceForHostname(): unsupported gloo device
+{% set deselect_tests = deselect_tests + " --deselect=gh_src/tests/tests_fabric/utilities/test_spike.py::test_fabric_spike_detection_integration" %}  # [win]
+
 test:
   source_files:
     - gh_src/tests
